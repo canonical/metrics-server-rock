@@ -8,8 +8,7 @@ base: bare
 build-base: ubuntu@22.04
 platforms:
   amd64:
-  # TODO: Add after workflows support bulding arm64 ROCKs
-  # arm64:
+  arm64:
 
 services:
   metrics-server:
