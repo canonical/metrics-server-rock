@@ -32,5 +32,5 @@ parts:
     build-snaps:
       - go/1.21/stable
     override-build: |
-      make
+      make ARCH=${CRAFT_TARGET_ARCH}
       cp $CRAFT_PART_BUILD/metrics-server $CRAFT_PART_INSTALL
