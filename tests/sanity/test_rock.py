@@ -6,7 +6,7 @@ import pytest
 from k8s_test_harness.util import docker_util, env_util
 
 
-@pytest.mark.parametrize("image_version", ["0.7.0"])
+@pytest.mark.parametrize("image_version", ["0.7.0", "0.7.2"])
 def test_sanity(image_version):
     rock = env_util.get_build_meta_info_for_rock_version(
         "metrics-server", image_version, "amd64"
