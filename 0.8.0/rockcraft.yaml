@@ -1,0 +1,36 @@
+name: metrics-server
+summary: ROCK for the metrics-server Project.
+description: This ROCK is a drop in replacement for the metrics-server/metrics-server image.
+version: "0.8.0"
+license: Apache-2.0
+
+base: bare
+build-base: ubuntu@22.04
+platforms:
+  amd64:
+  arm64:
+
+services:
+  metrics-server:
+    override: replace
+    summary: "metrics-server service"
+    startup: enabled
+    command: "/metrics-server [ ]"
+    on-failure: shutdown
+
+entrypoint-service: metrics-server
+
+parts:
+  metrics-server:
+    plugin: nil
+    source: https://github.com/kubernetes-sigs/metrics-server.git
+    source-type: git
+    source-tag: v0.8.0
+    source-depth: 1
+    build-packages:
+      - build-essential
+    build-snaps:
+      - go/1.24-fips/stable
+    override-build: |
+      CGO_ENABLED=1 make SYSTEM="GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto" ARCH=${CRAFT_TARGET_ARCH}
+      cp $CRAFT_PART_BUILD/metrics-server $CRAFT_PART_INSTALL
