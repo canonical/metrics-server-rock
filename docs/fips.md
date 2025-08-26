@@ -16,47 +16,6 @@ For the extended module, enduring the non-approved algorithms are not executed w
 
 To manually build the fips-compliant rock image you need an Ubuntu Pro token. Once obtained, you can follow these intructions:
 
-- Install multipass on a machine with enabled virtualization capabilities:
-
 ```
-sudo snap install multipass
-```
-
-- Launch a builder instance with an attached Ubuntu Pro account:
-
-```
-cat <<EOF | multipass launch --name rock-builder --cloud-init - --cpus 4 --disk 20GB --memory 8GB 22.04
-package_update: true
-package_upgrade: true
-packages:
-- ubuntu-advantage-tools
-runcmd:
-- pro attach <UBUNTU_PRO_TOKEN> --no-auto-enable
-- reboot
-EOF
-```
-
-- Install rockcraft from the `edge/pro-sources` channel
-
-```
-multipass exec rock-builder -- sudo snap install rockcraft --channel=edge/pro-sources --classic
-
-```
-- Initialize `lxd` on the machine 
-```
-
-multipass exec rock-builder -- lxd init --auto
-
-```
-
-- Switch to the directory where you `rockcraft.yaml` file is located and mount the directory on Multipass instance
-
-```
-multipass mount . rock-builder:/home/ubuntu/rock
-```
-
-- Pack the rock image with the `fips-updates` service enabled on both the build environment and the rock
-
-```
-multipass exec rock-builder -d /home/ubuntu/rock -- sudo rockcraft pack --pro=fips-updates
+sudo rockcraft pack --pro=fips-updates
 ```
