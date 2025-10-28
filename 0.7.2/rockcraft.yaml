@@ -1,6 +1,8 @@
 name: metrics-server
 summary: ROCK for the metrics-server Project.
-description: This ROCK is a drop in replacement for the metrics-server/metrics-server image.
+description: >
+  Metrics Server is a scalable, efficient source of container resource metrics
+  for Kubernetes built-in autoscaling pipelines.
 version: "0.7.2"
 license: Apache-2.0
 
