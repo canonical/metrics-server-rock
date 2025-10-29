@@ -32,7 +32,8 @@ parts:
     build-packages:
       - build-essential
     build-snaps:
-      - go/1.22/stable
+      - go/1.22-fips/stable
     override-build: |
-      make ARCH=${CRAFT_TARGET_ARCH}
+      go version
+      CGO_ENABLED=1 make SYSTEM="GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto" ARCH=${CRAFT_TARGET_ARCH}
       cp $CRAFT_PART_BUILD/metrics-server $CRAFT_PART_INSTALL
