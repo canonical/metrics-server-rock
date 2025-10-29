@@ -3,7 +3,7 @@ summary: ROCK for the metrics-server Project.
 description: >
   Metrics Server is a scalable, efficient source of container resource metrics
   for Kubernetes built-in autoscaling pipelines.
-version: "0.8.0"
+version: "0.7.1"
 license: Apache-2.0
 
 base: bare
@@ -32,16 +32,15 @@ parts:
     plugin: nil
     source: https://github.com/kubernetes-sigs/metrics-server.git
     source-type: git
-    source-tag: v0.8.0
+    source-tag: v0.7.1
     source-depth: 1
     build-packages:
       - build-essential
     build-snaps:
-      - go/1.24-fips/stable
+      - go/1.21-fips/stable
     override-build: |
-      snap refresh go --channel 1.24-fips/stable
+      snap refresh go --channel 1.21-fips/stable
       sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1 GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto/' Makefile
       make build ARCH="${CRAFT_ARCH_BUILD_FOR}" BINARY_NAME=metrics-server
-      ls $CRAFT_PART_BUILD/_output
       cp $CRAFT_PART_BUILD/_output/metrics-server $CRAFT_PART_INSTALL
       snap refresh go --channel 1.23-fips/stable

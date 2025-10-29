@@ -23,6 +23,11 @@ services:
 entrypoint-service: metrics-server
 
 parts:
+  openssl:
+    plugin: nil
+    stage-packages:
+      - openssl-fips-module-3 # a Pro only FIPS package for openssl
+      - openssl # now automatically selected from fips-preview
   metrics-server:
     plugin: nil
     source: https://github.com/kubernetes-sigs/metrics-server.git
@@ -34,6 +39,8 @@ parts:
     build-snaps:
       - go/1.22-fips/stable
     override-build: |
-      go version
-      CGO_ENABLED=1 make SYSTEM="GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto" ARCH=${CRAFT_TARGET_ARCH}
-      cp $CRAFT_PART_BUILD/metrics-server $CRAFT_PART_INSTALL
+      snap refresh go --channel 1.22-fips/stable
+      sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1 GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto/' Makefile
+      make build ARCH="${CRAFT_ARCH_BUILD_FOR}" BINARY_NAME=metrics-server
+      cp $CRAFT_PART_BUILD/_output/metrics-server $CRAFT_PART_INSTALL
+      snap refresh go --channel 1.23-fips/stable
