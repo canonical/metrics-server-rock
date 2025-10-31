@@ -33,34 +33,39 @@ def resolve_image(image_version):
         return f"{IMAGE_BASE}{image_version}"
 
 
-@pytest.mark.parametrize("image_version", _image_versions())
-@pytest.mark.parametrize(
-    "executable, check_version",
-    [("/metrics-server --version", True), ("/bin/pebble version", False)],
-    ids=["metrics-server", "pebble"],
-)
-def test_executables(image_version, executable, check_version):
-    image = resolve_image(image_version)
-    entrypoint = shlex.split(executable)
-
-    process = docker_util.run_in_docker(image, entrypoint, check_exit_code=False)
+def _run_entrypoint_and_assert(image, entrypoint, expect_stdout_contains=None):
+    entry = shlex.split(entrypoint) if isinstance(entrypoint, str) else entrypoint
+    process = docker_util.run_in_docker(image, entry, check_exit_code=False)
     assert (
         process.returncode == 0
-    ), f"Failed to run {entrypoint} in image {image}, stderr: {process.stderr}"
-    if check_version:
-        assert image_version in process.stdout
+    ), f"Failed to run {entry} in image {image}, stderr: {process.stderr}"
+    if expect_stdout_contains:
+        assert (
+            expect_stdout_contains in process.stdout
+        ), f"Expected '{expect_stdout_contains}' in stdout for {entry} in image {image}, stdout: {process.stdout}"
+
+
+@pytest.mark.parametrize("image_version", _image_versions())
+def test_pebble_version_is_fixed(image_version):
+    image = resolve_image(image_version)
+    _run_entrypoint_and_assert(
+        image, "/metrics-server --version", expect_stdout_contains=image_version
+    )
+
+
+@pytest.mark.parametrize("image_version", _image_versions())
+def test_pebble_version_is_fixed(image_version):
+    image = resolve_image(image_version)
+    _run_entrypoint_and_assert(
+        image, "/bin/pebble version", expect_stdout_contains="v1.14.0"
+    )
 
 
 @pytest.mark.parametrize("GOFIPS", [0, 1], ids=lambda v: f"GOFIPS={v}")
 @pytest.mark.parametrize("image_version", _image_versions())
-@pytest.mark.parametrize(
-    "executable",
-    ["/metrics-server --version"],
-    ids=["metrics-server"],
-)
-def test_fips(image_version, executable, GOFIPS):
+def test_fips(image_version, GOFIPS):
     image = resolve_image(image_version)
-    entrypoint = shlex.split(executable)
+    entrypoint = shlex.split("/metrics-server --version")
 
     docker_env = ["-e", f"GOFIPS={GOFIPS}"]
     process = docker_util.run_in_docker(
