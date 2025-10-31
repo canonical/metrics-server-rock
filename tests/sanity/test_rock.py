@@ -46,7 +46,7 @@ def _run_entrypoint_and_assert(image, entrypoint, expect_stdout_contains=None):
 
 
 @pytest.mark.parametrize("image_version", _image_versions())
-def test_pebble_version_is_fixed(image_version):
+def test_metrics_server_executable(image_version):
     image = resolve_image(image_version)
     _run_entrypoint_and_assert(
         image, "/metrics-server --version", expect_stdout_contains=image_version
@@ -54,7 +54,7 @@ def test_pebble_version_is_fixed(image_version):
 
 
 @pytest.mark.parametrize("image_version", _image_versions())
-def test_pebble_version_is_fixed(image_version):
+def test_pebble_executable(image_version):
     image = resolve_image(image_version)
     _run_entrypoint_and_assert(
         image, "/bin/pebble version", expect_stdout_contains="v1.14.0"
