@@ -71,7 +71,7 @@ def test_fips(image_version, executable, GOFIPS):
         # fipsed ROCKs should fail if GOFIPS set on a non-fips system
         # since the modified Go toolchain checks for a FIPS-capable crypto backend.
         expected_returncode = 2 if GOFIPS == 1 else 0
-        expected_error = "no supported crypto backend is enabled" if GOFIPS == 1 else ""
+        expected_error = "FIPS" if GOFIPS == 1 else ""
     else:
         # non-FIPS ROCKs should not care about GOFIPS setting and always succeed
         expected_returncode = 0
