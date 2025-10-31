@@ -39,7 +39,7 @@ def resolve_image(image_version):
     [("/metrics-server --version", True), ("/bin/pebble version", False)],
     ids=["metrics-server", "pebble"],
 )
-def test_executables(image_version, executable, check_version, GOFIPS):
+def test_executables(image_version, executable, check_version):
     image = resolve_image(image_version)
     entrypoint = shlex.split(executable)
 
