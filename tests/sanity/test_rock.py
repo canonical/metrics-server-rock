@@ -10,7 +10,7 @@ from k8s_test_harness.util import docker_util, env_util, fips_util
 TEST_PATH = Path(__file__)
 REPO_PATH = TEST_PATH.parent.parent.parent
 IMAGE_NAME = "metrics-server"
-IMAGE_BASE = f"ghcr.io/canonical/{IMAGE_NAME}:"
+IMAGE_BASE = f"ghcr.io/canonical/{IMAGE_NAME}"
 IMAGE_ENTRYPOINT = "/metrics-server --version"
 
 
