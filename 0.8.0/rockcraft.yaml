@@ -41,6 +41,9 @@ parts:
     override-build: |
       snap refresh go --channel 1.24-fips/stable
       sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1 GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto/' Makefile
+      # Metrics-server does not provide a way to pass custom build tags, so we have to
+      # modify the Makefile directly to add the required tags for FIPS support.
+      sed -i 's/-trimpath/-trimpath -tags "linux,cgo,ms_tls13kdf"/' Makefile
       make build ARCH="${CRAFT_ARCH_BUILD_FOR}" BINARY_NAME=metrics-server
       ls $CRAFT_PART_BUILD/_output
       cp $CRAFT_PART_BUILD/_output/metrics-server $CRAFT_PART_INSTALL
