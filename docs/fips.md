@@ -1,6 +1,6 @@
 ## Overview
 This document provides an analysis of metric server's cryptographic implementation
-with respect to FIPS 140 compliance requirements.
+with respect to [FIPS 140-3] compliance requirements.
 
 > **Note:** As of now, pebble is not built in a FIPS-compliant way. This document will be updated once it is.
 
@@ -41,4 +41,5 @@ sudo rockcraft pack --pro=fips-updates
 
 <!-- LINKS -->
 
+[FIPS 140-3]: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.140-3.pdf
 [this discourse post]: https://discourse.ubuntu.com/t/build-rocks-with-ubuntu-pro-services/57578
