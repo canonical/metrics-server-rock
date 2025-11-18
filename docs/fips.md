@@ -23,20 +23,21 @@ parts:
 ...
 ```
 
-For the extended module, enduring the non-approved algorithms are not executed would suffice.  
+For the extended module, ensuring the non-approved algorithms are not executed would suffice.  
 
 ## Manual build and test
 
-To manually build the fips-compliant rock image you need an Ubuntu Pro token. Once obtained, you can follow these intructions:
+**Prerequisites**:
 
-1. **Prerequisites**:
-   - `rockcraft` version that contains the pro feature (see [this discourse post]).
+- a `rockcraft` version that allows building with Ubuntu Pro services (refer to [this discourse post]).
 
-2. **Build Command**:
+**Building the Image**:
 
-   ```bash
-   sudo rockcraft pack --pro=fips-updates
-   ```
+Use the following command to build the image:
+
+```bash
+sudo rockcraft pack --pro=fips-updates
+```
 
 <!-- LINKS -->
 
