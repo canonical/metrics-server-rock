@@ -38,6 +38,8 @@ parts:
       - build-essential
     build-snaps:
       - go/1.24-fips/stable
+    # Use GOPROXY with direct fallback and disable HTTP/2 to avoid transient EOF errors
+    # from proxy.golang.org on self-hosted runners
     build-environment:
       - GOPROXY: https://proxy.golang.org,direct
       - GODEBUG: http2client=0
@@ -51,4 +53,3 @@ parts:
       ls $CRAFT_PART_BUILD/_output
       cp $CRAFT_PART_BUILD/_output/metrics-server $CRAFT_PART_INSTALL
       snap refresh go --channel 1.23-fips/stable
-# Trigger build
