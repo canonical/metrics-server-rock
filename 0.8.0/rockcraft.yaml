@@ -38,10 +38,7 @@ parts:
       - build-essential
     build-snaps:
       - go/1.24-fips/stable
-    # Use direct Go module downloads to avoid transient EOF errors
-    # from proxy.golang.org on self-hosted runners
     build-environment:
-      - GOPROXY: direct
     override-build: |
       snap refresh go --channel 1.24-fips/stable
       sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1 GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto/' Makefile
