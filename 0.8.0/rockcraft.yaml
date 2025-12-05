@@ -2,7 +2,7 @@ name: metrics-server
 summary: ROCK for the metrics-server Project.
 description: >
   Metrics Server is a scalable, efficient source of container resource metrics
-  for Kubernetes built-in autoscaling pipelines.
+  for Kubernetes built-in autoscaling pipelines. Testing Go caching.
 version: "0.8.0"
 license: Apache-2.0
 
