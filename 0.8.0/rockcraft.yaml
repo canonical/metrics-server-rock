@@ -38,7 +38,6 @@ parts:
       - build-essential
     build-snaps:
       - go/1.24-fips/stable
-    build-environment:
     override-build: |
       snap refresh go --channel 1.24-fips/stable
       sed -i 's/CGO_ENABLED=0/CGO_ENABLED=1 GOTOOLCHAIN=local GOEXPERIMENT=opensslcrypto/' Makefile
